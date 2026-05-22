@@ -1,3 +1,10 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  encryption:
+    secret-key: ${ENCRYPTION_SECRET_KEY:9fMovLiS2BDudjdOQ39LMotcTBQyLJ1UYwiDe53Glsa}
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
@@ -12,8 +19,13 @@ spring:
     change-log: classpath:db/migration/db.changelog-master.yml
     enabled: true
 
+logging:
+  level:
+    com.example.bankcards: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
 #Что нужно сделать:
-#  - Указать настройки подключения к базе данных.
-#  - Указать порт приложения.
 # - Настроить параметры безопасности и JWT.
 #  - Включить Swagger UI.
