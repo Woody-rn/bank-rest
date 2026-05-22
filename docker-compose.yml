@@ -17,6 +17,23 @@ services:
     networks:
       - bank_network
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bank_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-bank_card}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-admin}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "8080:8080"
+    networks:
+      - bank_network
+
 volumes:
   postgres_data:
     name: bank_card

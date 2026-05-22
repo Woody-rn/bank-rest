@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/changes/001-create-users-table.yml
+  - include:
+      file: db/migration/changes/002-create-cards-table.yml
+  - include:
+      file: db/migration/changes/003-create-transfers-table.yml
+  - include:
+      file: db/migration/changes/004-insert-default-data.yml
+  - include:
+      file: db/migration/changes/005-create-block-requests.yml

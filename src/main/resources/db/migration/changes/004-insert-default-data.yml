@@ -1,0 +1,128 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-insert-admin
+      author: nikitin
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: 'admin'
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'
+              - column:
+                  name: email
+                  value: 'admin@bank.ru'
+              - column:
+                  name: role
+                  value: 'ADMIN'
+
+  - changeSet:
+      id: 004-insert-user
+      author: nikitin
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: 'user'
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$rDkPvvAFV8VB4UGRjVHr7OZMQqK6BVXm9HjYFcqPr1K7nX5LqFbHa'
+              - column:
+                  name: email
+                  value: 'user@bank.ru'
+              - column:
+                  name: role
+                  value: 'USER'
+
+  - changeSet:
+      id: 004-insert-cards
+      author: nikitin
+      changes:
+        - insert:
+            tableName: cards
+            columns:
+              - column:
+                  name: card_number_encrypted
+                  value: 'enc_4532015112830366'
+              - column:
+                  name: card_number_hash
+                  value: 'hash_4532015112830366'
+              - column:
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE username = 'admin')
+              - column:
+                  name: card_holder_name
+                  value: 'IVAN IVANOV'
+              - column:
+                  name: expiry_month
+                  valueNumeric: 12
+              - column:
+                  name: expiry_year
+                  valueNumeric: 2027
+              - column:
+                  name: status
+                  value: 'ACTIVE'
+              - column:
+                  name: balance
+                  valueNumeric: 100000.00
+
+        - insert:
+            tableName: cards
+            columns:
+              - column:
+                  name: card_number_encrypted
+                  value: 'enc_5204738291037562'
+              - column:
+                  name: card_number_hash
+                  value: 'hash_5204738291037562'
+              - column:
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE username = 'user')
+              - column:
+                  name: card_holder_name
+                  value: 'PETR PETROV'
+              - column:
+                  name: expiry_month
+                  valueNumeric: 6
+              - column:
+                  name: expiry_year
+                  valueNumeric: 2026
+              - column:
+                  name: status
+                  value: 'ACTIVE'
+              - column:
+                  name: balance
+                  valueNumeric: 50000.00
+
+        - insert:
+            tableName: cards
+            columns:
+              - column:
+                  name: card_number_encrypted
+                  value: 'enc_3789546120345678'
+              - column:
+                  name: card_number_hash
+                  value: 'hash_3789546120345678'
+              - column:
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE username = 'user')
+              - column:
+                  name: card_holder_name
+                  value: 'PETR PETROV'
+              - column:
+                  name: expiry_month
+                  valueNumeric: 1
+              - column:
+                  name: expiry_year
+                  valueNumeric: 2025
+              - column:
+                  name: status
+                  value: 'EXPIRED'
+              - column:
+                  name: balance
+                  valueNumeric: 0.00
