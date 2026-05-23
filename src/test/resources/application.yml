@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  liquibase:
+    change-log: classpath:db/migration/db.changelog-master.yml
+    enabled: false
+
+app:
+  jwt:
+    secret: test-secret-key-must-be-at-least-32-bytes-long
+    expiration-ms: 3600000
+  encryption:
+    secret-key: 9fMovLiS2BDudjdOQ39LMotcTBQyLJ1UYwiDe53Glsa

@@ -2,6 +2,9 @@ server:
   port: ${SERVER_PORT:8080}
 
 app:
+  jwt:
+    secret: ${JWT_SECRET:qV3nL9pR2sT7wX1yZ5aB8cD0eF3gH6jK}
+    expiration-ms: 3600000
   encryption:
     secret-key: ${ENCRYPTION_SECRET_KEY:9fMovLiS2BDudjdOQ39LMotcTBQyLJ1UYwiDe53Glsa}
 
@@ -9,7 +12,7 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:bank_card}
-    username: ${POSTGRES_USER:admin11}
+    username: ${POSTGRES_USER:admin}
     password: ${POSTGRES_PASSWORD:password}
   jpa:
     hibernate:
