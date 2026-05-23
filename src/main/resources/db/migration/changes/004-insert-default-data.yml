@@ -11,7 +11,7 @@ databaseChangeLog:
                   value: 'admin'
               - column:
                   name: password
-                  value: '{bcrypt}$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'
+                  value: '{bcrypt}$2a$10$YsukGpmW2lchsaFC8F4RoOy5alrkyk0poQRXn7Q/WS4DQfnCV2i8W'
               - column:
                   name: email
                   value: 'admin@bank.ru'
@@ -31,7 +31,7 @@ databaseChangeLog:
                   value: 'user'
               - column:
                   name: password
-                  value: '{bcrypt}$2a$10$rDkPvvAFV8VB4UGRjVHr7OZMQqK6BVXm9HjYFcqPr1K7nX5LqFbHa'
+                  value: '{bcrypt}$2a$10$L3/mxKswm1K88tivrd6raOfRlYD8Z2ui7a0YkfMFHg87C1O04I3by'
               - column:
                   name: email
                   value: 'user@bank.ru'
