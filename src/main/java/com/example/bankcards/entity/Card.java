@@ -70,4 +70,11 @@ public class Card {
     @OneToMany(mappedBy = "card")
     @Builder.Default
     private List<BlockRequest> blockRequests = new ArrayList<>();
+
+    @PrePersist
+    void onCreate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+    }
 }
