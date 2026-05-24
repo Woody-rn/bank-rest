@@ -10,7 +10,7 @@ spring:
     show-sql: false
   liquibase:
     change-log: classpath:db/migration/db.changelog-master.yml
-    enabled: false
+    enabled: true
 
 app:
   jwt:

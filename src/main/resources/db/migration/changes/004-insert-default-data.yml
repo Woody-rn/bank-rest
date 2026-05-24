@@ -48,10 +48,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: card_number_encrypted
-                  value: 'enc_4532015112830366'
+                  value: 'znOPdCCXp4kuYe5wX8blkrys0H6Bt8Fu+1N9cmVkHBDdxEZTPWb8hBDlpAqOZ3rU'
               - column:
                   name: card_number_hash
-                  value: 'hash_4532015112830366'
+                  value: '9b089351f8971ed7b249f0bd3e78f1f9f67f1015378c5254db80b4b3f4c24543'
               - column:
                   name: user_id
                   valueComputed: (SELECT id FROM users WHERE username = 'admin')
@@ -76,10 +76,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: card_number_encrypted
-                  value: 'enc_5204738291037562'
+                  value: '7cxFRwyuLps+ia5C5MGpUcgcYa1GHyqYXbZiC/zE6IImhEsPpzQBJKAY5vkorHFE'
               - column:
                   name: card_number_hash
-                  value: 'hash_5204738291037562'
+                  value: 'be7b8211fcee36278cc802babb8d863eec40f070155f8c020866d974ddd6a463'
               - column:
                   name: user_id
                   valueComputed: (SELECT id FROM users WHERE username = 'user')
@@ -104,10 +104,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: card_number_encrypted
-                  value: 'enc_3789546120345678'
+                  value: 'q32fhYehUVfXy5GXIYY8GZHnCbbwRfCJ0rE32UXqSk2lA+ozzrn9NUIpRz7wHQ3u'
               - column:
                   name: card_number_hash
-                  value: 'hash_3789546120345678'
+                  value: '1f63107061d16932303cc52a6d1fe543925bca8a221c2d8eff29d49da036a844'
               - column:
                   name: user_id
                   valueComputed: (SELECT id FROM users WHERE username = 'user')
