@@ -29,6 +29,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-bank_card}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-admin}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      JWT_SECRET: ${JWT_SECRET:-qV3nL9pR2sT7wX1yZ5aB8cD0eF3gH6jK}
+      ENCRYPTION_SECRET_KEY: ${ENCRYPTION_SECRET_KEY:-9fMovLiS2BDudjdOQ39LMotcTBQyLJ1UYwiDe53Glsa}
+      SERVER_PORT: "8080"
     ports:
       - "8080:8080"
     networks:
