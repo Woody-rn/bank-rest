@@ -18,7 +18,7 @@ REST API для управления банковскими картами на 
 
 ### 1. Клонировать репозиторий
 
-```git clone <https://github.com/Woody-rn/bank-rest.git>```
+```git clone https://github.com/Woody-rn/bank-rest.git```
 
 ### 2. Запуск через Docker
 
@@ -86,3 +86,12 @@ REST API для управления банковскими картами на 
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 
 - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+
+## Покрытие тестов
+
+Для генерации отчёта JaCoCo:
+
+```bash
+mvn clean test
+Отчёт будет доступен в target/site/jacoco/index.html
+Текущее покрытие: 74% инструкций, 60% ветвлений.
