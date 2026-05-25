@@ -29,6 +29,9 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
-#Что нужно сделать:
-# - Настроить параметры безопасности и JWT.
-#  - Включить Swagger UI.
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

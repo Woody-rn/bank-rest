@@ -8,6 +8,8 @@ import com.example.bankcards.entity.User;
 import com.example.bankcards.service.BlockRequestService;
 import com.example.bankcards.service.CardService;
 import com.example.bankcards.service.TransferService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
+@Tag(name = "User", description = "User operations with own cards and transfers")
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class UserController {
     private final TransferService transferService;
     private final BlockRequestService blockRequestService;
 
+    @Operation(summary = "Get my cards with optional filter by status")
     @GetMapping("/cards")
     public ResponseEntity<Page<CardResponse>> getMyCards(
             @AuthenticationPrincipal User user,
@@ -39,6 +43,7 @@ public class UserController {
         return ResponseEntity.ok(cardService.getUserCards(user.getId(), pageable));
     }
 
+    @Operation(summary = "Get one of my cards by ID")
     @GetMapping("/cards/{id}")
     public ResponseEntity<CardResponse> getCard(
             @AuthenticationPrincipal User user,
@@ -50,6 +55,7 @@ public class UserController {
         return ResponseEntity.ok(cardService.getCardById(id));
     }
 
+    @Operation(summary = "Get balance of my card")
     @GetMapping("/cards/{id}/balance")
     public ResponseEntity<BigDecimal> getBalance(
             @AuthenticationPrincipal User user,
@@ -61,6 +67,7 @@ public class UserController {
         return ResponseEntity.ok(cardService.getCardById(id).getBalance());
     }
 
+    @Operation(summary = "Request to block my card")
     @PostMapping("/cards/{id}/block-request")
     public ResponseEntity<Void> requestBlock(
             @AuthenticationPrincipal User user,
@@ -70,6 +77,7 @@ public class UserController {
         return ResponseEntity.accepted().build();
     }
 
+    @Operation(summary = "Transfer money between my cards")
     @PostMapping("/transfers")
     public ResponseEntity<TransferResponse> transfer(
             @AuthenticationPrincipal User user,
@@ -78,6 +86,7 @@ public class UserController {
         return ResponseEntity.ok(transferService.transfer(user.getId(), request));
     }
 
+    @Operation(summary = "Get transfer history for my card")
     @GetMapping("/transfers")
     public ResponseEntity<Page<TransferResponse>> getTransferHistory(
             @AuthenticationPrincipal User user,
