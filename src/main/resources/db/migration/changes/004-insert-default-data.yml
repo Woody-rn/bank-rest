@@ -2,6 +2,11 @@ databaseChangeLog:
   - changeSet:
       id: 004-insert-admin
       author: nikitin
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT COUNT(*) FROM users WHERE username = 'admin'
       changes:
         - insert:
             tableName: users
@@ -22,6 +27,11 @@ databaseChangeLog:
   - changeSet:
       id: 004-insert-user
       author: nikitin
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT COUNT(*) FROM users WHERE username = 'user'
       changes:
         - insert:
             tableName: users
@@ -42,6 +52,11 @@ databaseChangeLog:
   - changeSet:
       id: 004-insert-cards
       author: nikitin
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT COUNT(*) FROM cards WHERE card_number_hash = '9b089351f8971ed7b249f0bd3e78f1f9f67f1015378c5254db80b4b3f4c24543'
       changes:
         - insert:
             tableName: cards

@@ -2,6 +2,11 @@ databaseChangeLog:
   - changeSet:
       id: 005-create-block-requests
       author: nikitin
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: block_requests
       changes:
         - createTable:
             tableName: block_requests
