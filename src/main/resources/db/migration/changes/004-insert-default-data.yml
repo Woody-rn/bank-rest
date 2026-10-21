@@ -106,7 +106,7 @@ databaseChangeLog:
                   valueNumeric: 6
               - column:
                   name: expiry_year
-                  valueNumeric: 2026
+                  valueNumeric: 2027
               - column:
                   name: status
                   value: 'ACTIVE'

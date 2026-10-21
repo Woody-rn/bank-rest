@@ -1,8 +1,10 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.CardRequest;
-import com.example.bankcards.dto.CardResponse;
-import com.example.bankcards.dto.CreateUserRequest;
+import com.example.bankcards.dto.request.CardRequest;
+import com.example.bankcards.dto.response.BlockRequestResponse;
+import com.example.bankcards.dto.response.CardResponse;
+import com.example.bankcards.dto.request.CreateUserRequest;
+import com.example.bankcards.dto.response.UserResponse;
 import com.example.bankcards.entity.BlockRequest;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.service.BlockRequestService;
@@ -69,19 +71,19 @@ public class AdminController {
 
     @Operation(summary = "Create a new user")
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 
     @Operation(summary = "Get all active users")
     @GetMapping("/users")
-    public ResponseEntity<Page<User>> getUsers(Pageable pageable) {
+    public ResponseEntity<Page<UserResponse>> getUsers(Pageable pageable) {
         return ResponseEntity.ok(userService.getUsers(pageable));
     }
 
     @Operation(summary = "Get one user by ID")
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
@@ -94,19 +96,19 @@ public class AdminController {
 
     @Operation(summary = "Get all pending block requests")
     @GetMapping("/block-requests")
-    public ResponseEntity<Page<BlockRequest>> getPendingRequests(Pageable pageable) {
+    public ResponseEntity<Page<BlockRequestResponse>> getPendingRequests(Pageable pageable) {
         return ResponseEntity.ok(blockRequestService.getPendingRequests(pageable));
     }
 
     @Operation(summary = "Approve a block request")
     @PutMapping("/block-requests/{id}/approve")
-    public ResponseEntity<BlockRequest> approveRequest(@PathVariable Long id) {
+    public ResponseEntity<BlockRequestResponse> approveRequest(@PathVariable Long id) {
         return ResponseEntity.ok(blockRequestService.approveRequest(id));
     }
 
     @Operation(summary = "Reject a block request")
     @PutMapping("/block-requests/{id}/reject")
-    public ResponseEntity<BlockRequest> rejectRequest(@PathVariable Long id) {
+    public ResponseEntity<BlockRequestResponse> rejectRequest(@PathVariable Long id) {
         return ResponseEntity.ok(blockRequestService.rejectRequest(id));
     }
 }

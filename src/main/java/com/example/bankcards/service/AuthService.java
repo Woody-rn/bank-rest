@@ -1,7 +1,7 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.JwtResponse;
-import com.example.bankcards.dto.LoginRequest;
+import com.example.bankcards.dto.response.JwtResponse;
+import com.example.bankcards.dto.request.LoginRequest;
 import com.example.bankcards.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

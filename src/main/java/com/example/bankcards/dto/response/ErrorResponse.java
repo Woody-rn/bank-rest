@@ -1,4 +1,4 @@
-package com.example.bankcards.dto;
+package com.example.bankcards.dto.response;
 
 import java.time.LocalDateTime;
 

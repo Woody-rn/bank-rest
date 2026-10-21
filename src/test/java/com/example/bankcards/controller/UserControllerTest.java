@@ -1,7 +1,7 @@
 package com.example.bankcards.controller;
 
 import com.example.bankcards.BaseControllerTest;
-import com.example.bankcards.dto.CardRequest;
+import com.example.bankcards.dto.request.CardRequest;
 import com.example.bankcards.service.CardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

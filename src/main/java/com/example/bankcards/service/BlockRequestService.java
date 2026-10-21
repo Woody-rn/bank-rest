@@ -1,5 +1,6 @@
 package com.example.bankcards.service;
 
+import com.example.bankcards.dto.response.BlockRequestResponse;
 import com.example.bankcards.entity.BlockRequest;
 import com.example.bankcards.entity.BlockRequestStatus;
 import com.example.bankcards.entity.Card;
@@ -40,12 +41,14 @@ public class BlockRequestService {
         return request;
     }
 
-    public Page<BlockRequest> getPendingRequests(Pageable pageable) {
-        return blockRequestRepository.findByStatus(BlockRequestStatus.PENDING, pageable);
+    @Transactional(readOnly = true)
+    public Page<BlockRequestResponse> getPendingRequests(Pageable pageable) {
+        return blockRequestRepository.findByStatus(BlockRequestStatus.PENDING, pageable)
+                .map(this::mapToResponse);
     }
 
     @Transactional
-    public BlockRequest approveRequest(Long requestId) {
+    public BlockRequestResponse approveRequest(Long requestId) {
         BlockRequest request = getRequestOrThrow(requestId);
         validateRequestPending(request);
         validateCardNotDeleted(request.getCard());
@@ -54,11 +57,11 @@ public class BlockRequestService {
         request.getCard().setStatus(CardStatus.BLOCKED);
 
         log.info("Block request approved: id={}, cardId={}", requestId, request.getCard().getId());
-        return request;
+        return mapToResponse(request);
     }
 
     @Transactional
-    public BlockRequest rejectRequest(Long requestId) {
+    public BlockRequestResponse rejectRequest(Long requestId) {
         BlockRequest request = getRequestOrThrow(requestId);
         validateRequestPending(request);
         validateCardNotDeleted(request.getCard());
@@ -66,7 +69,7 @@ public class BlockRequestService {
         request.setStatus(BlockRequestStatus.REJECTED);
 
         log.info("Block request rejected: id={}, cardId={}", requestId, request.getCard().getId());
-        return request;
+        return mapToResponse(request);
     }
 
     private Card getCard(Long cardId) {
@@ -77,6 +80,18 @@ public class BlockRequestService {
     private BlockRequest getRequestOrThrow(Long requestId) {
         return blockRequestRepository.findById(requestId)
                 .orElseThrow(() -> new BlockRequestNotFoundException("Block request not found: " + requestId));
+    }
+
+    private BlockRequestResponse mapToResponse(BlockRequest br) {
+        return new BlockRequestResponse(
+                br.getId(),
+                br.getCard().getId(),
+                br.getCard().getCardHolderName(),
+                br.getUser().getId(),
+                br.getUser().getUsername(),
+                br.getStatus(),
+                br.getCreatedAt()
+        );
     }
 
     private void validateCardOwnership(Card card, Long userId) {

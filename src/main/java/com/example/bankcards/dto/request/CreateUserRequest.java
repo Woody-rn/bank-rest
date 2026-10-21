@@ -1,4 +1,4 @@
-package com.example.bankcards.dto;
+package com.example.bankcards.dto.request;
 
 import com.example.bankcards.entity.Role;
 import jakarta.validation.constraints.Email;

@@ -1,8 +1,8 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.CardResponse;
-import com.example.bankcards.dto.TransferRequest;
-import com.example.bankcards.dto.TransferResponse;
+import com.example.bankcards.dto.response.CardResponse;
+import com.example.bankcards.dto.request.TransferRequest;
+import com.example.bankcards.dto.response.TransferResponse;
 import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.service.BlockRequestService;
