@@ -2,7 +2,7 @@ package com.example.bankcards.controller;
 
 import com.example.bankcards.BaseControllerTest;
 import com.example.bankcards.dto.request.CardRequest;
-import com.example.bankcards.service.CardService;
+import com.example.bankcards.service.impl.CardServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends BaseControllerTest {
 
     @Autowired
-    private CardService cardService;
+    private CardServiceImpl cardServiceImpl;
 
     private String userToken;
     private Long userCard1Id;
@@ -42,7 +42,7 @@ class UserControllerTest extends BaseControllerTest {
                 12,
                 2027,
                 2L);
-        userCard2Id = cardService.createCard(extraCard).getId();
+        userCard2Id = cardServiceImpl.createCard(extraCard).getId();
 
         resetCard(userCard1Id);
         resetCard(userCard2Id);

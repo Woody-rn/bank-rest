@@ -12,6 +12,7 @@ import com.example.bankcards.exception.CardValidationException;
 import com.example.bankcards.exception.InsufficientFundsException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.TransferRepository;
+import com.example.bankcards.service.impl.TransferServiceImpl;
 import com.example.bankcards.util.AesCardEncryptor;
 import com.example.bankcards.util.CardDataMasker;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,7 @@ class TransferServiceTest {
     @Mock private CardDataMasker masker;
 
     @InjectMocks
-    private TransferService transferService;
+    private TransferServiceImpl transferService;
 
     private Card fromCard;
     private Card toCard;

@@ -1,11 +1,10 @@
 package com.example.bankcards.controller;
 
 import com.example.bankcards.dto.request.CardRequest;
+import com.example.bankcards.dto.request.CreateUserRequest;
 import com.example.bankcards.dto.response.BlockRequestResponse;
 import com.example.bankcards.dto.response.CardResponse;
-import com.example.bankcards.dto.request.CreateUserRequest;
 import com.example.bankcards.dto.response.UserResponse;
-import com.example.bankcards.entity.BlockRequest;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.service.BlockRequestService;
 import com.example.bankcards.service.CardService;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Admin", description = "Admin operations with cards, users and block requests")
@@ -28,44 +28,44 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    private final CardService cardService;
+    private final CardService cardServiceImpl;
     private final BlockRequestService blockRequestService;
     private final UserService userService;
 
     @Operation(summary = "Create a new card for any user")
     @PostMapping("/cards")
     public ResponseEntity<CardResponse> createCard(@Valid @RequestBody CardRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cardService.createCard(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(cardServiceImpl.createCard(request));
     }
 
     @Operation(summary = "Get all cards with pagination")
     @GetMapping("/cards")
     public ResponseEntity<Page<CardResponse>> getAllCards(Pageable pageable) {
-        return ResponseEntity.ok(cardService.getAllCards(pageable));
+        return ResponseEntity.ok(cardServiceImpl.getAllCards(pageable));
     }
 
     @Operation(summary = "Get one card by ID")
     @GetMapping("/cards/{id}")
     public ResponseEntity<CardResponse> getCard(@PathVariable Long id) {
-        return ResponseEntity.ok(cardService.getCardById(id));
+        return ResponseEntity.ok(cardServiceImpl.getCardById(id));
     }
 
     @Operation(summary = "Block a card")
     @PutMapping("/cards/{id}/block")
     public ResponseEntity<CardResponse> blockCard(@PathVariable Long id) {
-        return ResponseEntity.ok(cardService.blockCard(id));
+        return ResponseEntity.ok(cardServiceImpl.blockCard(id));
     }
 
     @Operation(summary = "Activate a card")
     @PutMapping("/cards/{id}/activate")
     public ResponseEntity<CardResponse> activateCard(@PathVariable Long id) {
-        return ResponseEntity.ok(cardService.activateCard(id));
+        return ResponseEntity.ok(cardServiceImpl.activateCard(id));
     }
 
     @Operation(summary = "Soft delete a card (mark as removed)")
     @DeleteMapping("/cards/{id}")
     public ResponseEntity<Void> deleteCard(@PathVariable Long id) {
-        cardService.deleteCard(id);
+        cardServiceImpl.deleteCard(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -89,8 +89,10 @@ public class AdminController {
 
     @Operation(summary = "Disable a user (soft delete)")
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable Long id) {
+        userService.deleteUser(id, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 

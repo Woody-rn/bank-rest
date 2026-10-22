@@ -10,6 +10,7 @@ import com.example.bankcards.exception.CardValidationException;
 import com.example.bankcards.exception.UserNotFoundException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.UserRepository;
+import com.example.bankcards.service.impl.CardServiceImpl;
 import com.example.bankcards.util.AesCardEncryptor;
 import com.example.bankcards.util.CardDataMasker;
 import com.example.bankcards.util.CardNumberGenerator;
@@ -43,7 +44,7 @@ class CardServiceTest {
     @Mock private CardNumberGenerator cardNumberGenerator;
 
     @InjectMocks
-    private CardService cardService;
+    private CardServiceImpl cardServiceImpl;
 
     private User user;
     private Card card;
@@ -83,7 +84,7 @@ class CardServiceTest {
         when(encryptor.decrypt("encrypted_1234")).thenReturn("4532015112830366");
         when(masker.mask("4532015112830366")).thenReturn("**** **** **** 0366");
 
-        CardResponse response = cardService.createCard(cardRequest);
+        CardResponse response = cardServiceImpl.createCard(cardRequest);
 
         assertNotNull(response);
         assertEquals("TEST USER", response.getCardHolderName());
@@ -98,7 +99,7 @@ class CardServiceTest {
 
         CardRequest request = new CardRequest("Test", 12, 2027, 99L);
 
-        assertThrows(UserNotFoundException.class, () -> cardService.createCard(request));
+        assertThrows(UserNotFoundException.class, () -> cardServiceImpl.createCard(request));
         verify(cardRepository, never()).save(any());
     }
 
@@ -108,7 +109,7 @@ class CardServiceTest {
 
         CardRequest expiredRequest = new CardRequest("Test", 1, 2025, 1L);
 
-        assertThrows(CardValidationException.class, () -> cardService.createCard(expiredRequest));
+        assertThrows(CardValidationException.class, () -> cardServiceImpl.createCard(expiredRequest));
         verify(cardRepository, never()).save(any());
     }
 
@@ -118,7 +119,7 @@ class CardServiceTest {
         when(encryptor.decrypt("encrypted_1234")).thenReturn("4532015112830366");
         when(masker.mask("4532015112830366")).thenReturn("**** **** **** 0366");
 
-        CardResponse response = cardService.getCardById(1L);
+        CardResponse response = cardServiceImpl.getCardById(1L);
 
         assertEquals(1L, response.getId());
         assertEquals("**** **** **** 0366", response.getMaskedNumber());
@@ -128,7 +129,7 @@ class CardServiceTest {
     void getCardById_shouldThrowCardNotFoundException() {
         when(cardRepository.findByIdAndIsDeletedFalse(99L)).thenReturn(Optional.empty());
 
-        assertThrows(CardNotFoundException.class, () -> cardService.getCardById(99L));
+        assertThrows(CardNotFoundException.class, () -> cardServiceImpl.getCardById(99L));
     }
 
     @Test
@@ -139,7 +140,7 @@ class CardServiceTest {
         when(encryptor.decrypt(any())).thenReturn("4532015112830366");
         when(masker.mask(any())).thenReturn("**** **** **** 0366");
 
-        Page<CardResponse> result = cardService.getUserCards(1L, pageable);
+        Page<CardResponse> result = cardServiceImpl.getUserCards(1L, pageable);
 
         assertEquals(1, result.getTotalElements());
         assertEquals("**** **** **** 0366", result.getContent().getFirst().getMaskedNumber());
@@ -151,7 +152,7 @@ class CardServiceTest {
         when(encryptor.decrypt(any())).thenReturn("4532015112830366");
         when(masker.mask(any())).thenReturn("**** **** **** 0366");
 
-        CardResponse response = cardService.blockCard(1L);
+        CardResponse response = cardServiceImpl.blockCard(1L);
 
         assertEquals(CardStatus.BLOCKED, card.getStatus());
         assertEquals(CardStatus.BLOCKED, response.getStatus());
@@ -164,7 +165,7 @@ class CardServiceTest {
         when(encryptor.decrypt(any())).thenReturn("4532015112830366");
         when(masker.mask(any())).thenReturn("**** **** **** 0366");
 
-        CardResponse response = cardService.activateCard(1L);
+        CardResponse response = cardServiceImpl.activateCard(1L);
 
         assertEquals(CardStatus.ACTIVE, card.getStatus());
         assertEquals(CardStatus.ACTIVE, response.getStatus());
@@ -174,7 +175,7 @@ class CardServiceTest {
     void deleteCard_shouldSetIsDeletedTrue() {
         when(cardRepository.findByIdAndIsDeletedFalse(1L)).thenReturn(Optional.of(card));
 
-        cardService.deleteCard(1L);
+        cardServiceImpl.deleteCard(1L);
 
         assertTrue(card.getIsDeleted());
     }

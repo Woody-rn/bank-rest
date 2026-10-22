@@ -1,5 +1,6 @@
 package com.example.bankcards.repository;
 
+import com.example.bankcards.entity.Role;
 import com.example.bankcards.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,5 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByUsername(String username);
 
-    Page<User> findByEnabledTrue(Pageable pageable);
+    Page<User> findAllByOrderByIdAsc(Pageable pageable);
+
+    long countByRole(Role role);
 }
