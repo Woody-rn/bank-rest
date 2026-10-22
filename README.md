@@ -1,97 +1,82 @@
-# Система управления банковскими картами
+# Bank REST API
 
-REST API для управления банковскими картами на Spring Boot.
+Backend-приложение для системы управления банковскими картами. Разработано на Java 21 и Spring Boot 3 с использованием JWT-аутентификации, ролевой модели и шифрования данных.
 
-## Технологии
+🔗 **[Ссылка на Frontend (React + TS)](https://github.com/Woody-rn/bank-front)**
 
-- Java 21
-- Spring Boot 3.5.14
-- Spring Security + JWT
-- Spring Data JPA
-- PostgreSQL
-- Liquibase (миграции БД)
-- Docker Compose
-- Swagger (OpenAPI 3.1)
-- JUnit 5 + Mockito
+##  Стек
+- **Java 21**
+- **Spring Boot 3.5.14**
+- **Spring Security** + **JWT** (jjwt)
+- **Spring Data JPA** + **Hibernate**
+- **PostgreSQL**
+- **Liquibase** (миграции БД)
+- **Docker Compose**
+- **Swagger (OpenAPI 3.1)**
+- **JUnit 5** + **Mockito** + **JaCoCo**
 
-## Быстрый старт
+##  Ключевые особенности
+- **JWT-аутентификация** и разграничение прав (ADMIN / USER).
+- **Безопасность карт**: номер карты хранится в зашифрованном виде (AES-256), для поиска используется SHA-256 хеш, наружу отдаются только маскированные данные (`**** **** **** 1234`).
+- **Бизнес-логика**: переводы между картами с использованием `Pessimistic Lock` (защита от race condition при списании баланса).
+- **Защита от ошибок админа**: нельзя отключить самого себя и нельзя отключить последнего администратора в системе.
+- **Архитектура**: разделение на слои (Controller -> Service Interface -> Service Impl -> Repository), использование DTO для скрытия сущностей БД и предотвращения циклической сериализации.
+- **Liquibase**: миграции с `preConditions` и `CHECK` констрейнтами на уровне БД.
+- **Docker**: полная контейнеризация приложения и базы данных.
 
-### 1. Клонировать репозиторий
+##  Быстрый старт
 
-```git clone https://github.com/Woody-rn/bank-rest.git```
+### 1. Запуск через Docker (рекомендуется)
 
-### 2. Запуск через Docker
+Для запуска нужен установленный Docker и Docker Compose.
 
-```docker-compose up -d```
+```bash
+docker-compose up -d
+```
 
-### 3. Запуск без Docker
-   Нужен запущенный PostgreSQL
+Приложение будет доступно по адресу: `http://localhost:8080`
 
+### 2. Локальный запуск
 
-## Тестовые пользователи
+Требуется запущенный PostgreSQL и JDK 21.
 
-|Логин|Пароль|Роль|
+1. Создайте базу данных и настройте доступ в `src/main/resources/application.yml`.
+2. Выполните:
+```bash
+mvn clean spring-boot:run
+```
+
+##  Тестовые аккаунты
+
+| Роль | Логин | Пароль |
 |---|---|---|
-|admin|admin123|ADMIN|
-|user|user123|USER|
+| Администратор | `admin` | `admin123` |
+| Пользователь | `user` | `user123` |
 
-## API
+##  Документация API
 
-### Авторизация
+После запуска приложения документация доступна в **Swagger UI**:
+🔗 `http://localhost:8080/swagger-ui.html`
 
-|Метод|URL|Описание|
-|---|---|---|
-|POST|`/api/auth/login`|Вход, получение JWT токена|
+Основные эндпоинты:
+- **Auth**: `POST /api/auth/login` — получение токена.
+- **User**: операции со своими картами и переводами.
+- **Admin**: управление картами, пользователями и заявками на блокировку.
 
-### Пользователь (`/api/user`)
+##  Тестирование
 
-|Метод|URL|Описание|
-|---|---|---|
-|GET|`/cards`|Мои карты (фильтр `?status=ACTIVE`)|
-|GET|`/cards/{id}`|Карта по ID|
-|GET|`/cards/{id}/balance`|Баланс карты|
-|POST|`/cards/{id}/block-request`|Запрос на блокировку|
-|POST|`/transfers`|Перевод между своими картами|
-|GET|`/transfers?cardId=`|История переводов|
-
-### Администратор (`/api/admin`)
-
-|Метод|URL|Описание|
-|---|---|---|
-|POST|`/cards`|Создать карту|
-|GET|`/cards`|Все карты|
-|GET|`/cards/{id}`|Карта по ID|
-|PUT|`/cards/{id}/block`|Заблокировать карту|
-|PUT|`/cards/{id}/activate`|Активировать карту|
-|DELETE|`/cards/{id}`|Удалить карту (мягкое удаление)|
-|POST|`/users`|Создать пользователя|
-|GET|`/users`|Все пользователи|
-|GET|`/users/{id}`|Пользователь по ID|
-|DELETE|`/users/{id}`|Отключить пользователя|
-|GET|`/block-requests`|Заявки на блокировку|
-|PUT|`/block-requests/{id}/approve`|Одобрить заявку|
-|PUT|`/block-requests/{id}/reject`|Отклонить заявку|
-
-## Аутентификация
-
-1. `POST /api/auth/login` с логином и паролем
-
-2. Скопировать токен из ответа
-
-3. Добавить заголовок: `Authorization: Bearer <токен>`
-
-
-## Документация API
-
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
-
-- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
-
-## Покрытие тестов
-
-Для генерации отчёта JaCoCo:
+Проект покрыт юнит-тестами и интеграционными тестами (MockMvc). Для генерации отчёта JaCoCo выполните:
 
 ```bash
 mvn clean test
-Отчёт будет доступен в target/site/jacoco/index.html
-Текущее покрытие: 74% инструкций, 60% ветвлений.
+```
+Отчёт будет доступен в `target/site/jacoco/index.html`.
+
+**Текущее покрытие:** ~74% инструкций, ~60% ветвлений.
+
+
+##  Архитектурные решения
+- **JWT**: stateless-сессия, фильтр `JwtAuthenticationFilter`.
+- **Шифрование**: `AesCardEncryptor` (CBC, случайный IV) и `HashEncoder` (SHA-256).
+- **Конкурентность**: `@Lock(LockModeType.PESSIMISTIC_WRITE)` при переводах.
+- **Безопасность**: `GlobalExceptionHandler` для возврата унифицированных ошибок (400, 401, 403, 404, 409), скрытие паролей и системных данных из API.

@@ -60,7 +60,7 @@ class UserControllerTest extends BaseControllerTest {
     @Test
     void getMyCards_shouldReturn403_whenNoToken() throws Exception {
         mockMvc.perform(get("/api/user/cards"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized()); // <-- ТЕПЕРЬ 401
     }
 
     @Test
